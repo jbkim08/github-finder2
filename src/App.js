@@ -1,11 +1,16 @@
+import Navbar from "./components/layout/Navbar";
 import "./App.css";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <div className="bg-purple-500">
-      <h1 className="text-xl">헬로우 월드!</h1>
-      <button className="btn">클릭!</button>
-    </div>
+    <BrowserRouter>
+      <div className="flex flex-col justify-between h-screen">
+        <Navbar />
+
+        <main>Centent</main>
+      </div>
+    </BrowserRouter>
   );
 }
 
