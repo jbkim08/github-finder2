@@ -11,9 +11,10 @@ export const GithubProvider = ({ children }) => {
   //스테이트의 초기값
   const initialState = {
     users: [],
-    loading: true,
+    loading: false,
   };
   const [state, dispatch] = useReducer(githubReducer, initialState);
+  //테스트용 유저검색
   const fetchUsers = async () => {
     setLoading(); //데이터를 가져오기 전에 로딩을 true로 업데이트
     const response = await fetch("https://api.github.com/users", {
@@ -26,8 +27,6 @@ export const GithubProvider = ({ children }) => {
       type: "GET_USERS",
       payload: data,
     });
-    //setUsers(data); //유저들을 저장
-    //setLoading(false); //데이터 로딩 완료
   };
 
   //로딩상태를 true로 업데이트하기 위한 dispatch
