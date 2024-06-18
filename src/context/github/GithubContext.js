@@ -28,6 +28,24 @@ export const GithubProvider = ({ children }) => {
       payload: data,
     });
   };
+  //특정 단어로 유저찾기
+  const searchUsers = async (text) => {
+    setLoading(); //데이터를 가져오기 전에 로딩을 true로 업데이트
+    const params = new URLSearchParams({ q: text });
+    const response = await fetch(
+      `https://api.github.com/search/users?${params}`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+        },
+      }
+    );
+    const { items } = await response.json(); //제이슨 변환
+    dispatch({
+      type: "GET_USERS",
+      payload: items,
+    });
+  };
 
   //로딩상태를 true로 업데이트하기 위한 dispatch
   const setLoading = () =>
@@ -37,7 +55,7 @@ export const GithubProvider = ({ children }) => {
 
   return (
     <GithubContext.Provider
-      value={{ users: state.users, loading: state.loading, fetchUsers }}
+      value={{ users: state.users, loading: state.loading, searchUsers }}
     >
       {children}
     </GithubContext.Provider>
