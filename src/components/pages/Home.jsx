@@ -1,9 +1,10 @@
 import React from "react";
+import UserResult from "../users/UserResult";
 
 function Home() {
   return (
     <div>
-      <h1>홈페이지</h1>
+      <UserResult />
     </div>
   );
 }
