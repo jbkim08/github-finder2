@@ -57,8 +57,15 @@ export const GithubProvider = ({ children }) => {
   const getUserRepo = async (login) => {
     setLoading(); //데이터를 가져오기 전에 로딩을 true로 업데이트
 
+    //파라미터 옵션
+    const params = new URLSearchParams({
+      sort: "created",
+      direction: "desc",
+      per_page: 10,
+    });
+
     const response = await fetch(
-      `https://api.github.com/users/${login}/repos`,
+      `https://api.github.com/users/${login}/repos?${params}`,
       {
         headers: {
           Authorization: `token ${GITHUB_TOKEN}`,
