@@ -11,22 +11,28 @@ export const GithubProvider = ({ children }) => {
   //스테이트의 초기값
   const initialState = {
     users: [],
+    user: {},
     loading: false,
   };
   const [state, dispatch] = useReducer(githubReducer, initialState);
-  //테스트용 유저검색
-  const fetchUsers = async () => {
+  //한명의 유저검색
+  const getUser = async (login) => {
     setLoading(); //데이터를 가져오기 전에 로딩을 true로 업데이트
-    const response = await fetch("https://api.github.com/users", {
+    const response = await fetch(`https://api.github.com/users/${login}`, {
       headers: {
         Authorization: `token ${GITHUB_TOKEN}`,
       },
     });
-    const data = await response.json(); //제이슨 변환
-    dispatch({
-      type: "GET_USERS",
-      payload: data,
-    });
+    //로그인아이디가 없을 경우에는 못찾음 페이지
+    if (response.status === 404) {
+      window.location = "/notfound"; //404 페이지 표시
+    } else {
+      const data = await response.json(); //제이슨 변환
+      dispatch({
+        type: "GET_USER",
+        payload: data,
+      });
+    }
   };
   //특정 단어로 유저찾기
   const searchUsers = async (text) => {
@@ -65,6 +71,7 @@ export const GithubProvider = ({ children }) => {
         loading: state.loading,
         searchUsers,
         clearUsers,
+        getUser,
       }}
     >
       {children}
