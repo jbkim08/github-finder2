@@ -3,13 +3,16 @@ import GithubContext from "../../context/github/GithubContext";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "../layout/Spinner";
 import { FaCodepen, FaUserFriends, FaUsers } from "react-icons/fa";
+import RepoList from "../layout/repos/RepoList";
 
 function User() {
-  const { user, getUser, loading } = useContext(GithubContext);
+  const { user, getUser, loading, repos, getUserRepo } =
+    useContext(GithubContext);
   const params = useParams(); //주소변수값을 가진 객체
   //처음 한번 유저를 검색
   useEffect(() => {
     getUser(params.login);
+    getUserRepo(params.login);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -144,6 +147,8 @@ function User() {
               </div>
             </div>
           </div>
+          {/* 여기에 리포리스트 추가 */}
+          <RepoList repos={repos} />
         </div>
       </>
     );
