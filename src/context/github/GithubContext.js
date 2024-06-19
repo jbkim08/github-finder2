@@ -12,6 +12,7 @@ export const GithubProvider = ({ children }) => {
   const initialState = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
   };
   const [state, dispatch] = useReducer(githubReducer, initialState);
@@ -52,6 +53,24 @@ export const GithubProvider = ({ children }) => {
       payload: items,
     });
   };
+  //유저의 공개 리포검색
+  const getUserRepo = async (login) => {
+    setLoading(); //데이터를 가져오기 전에 로딩을 true로 업데이트
+
+    const response = await fetch(
+      `https://api.github.com/users/${login}/repos`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+        },
+      }
+    );
+    const data = await response.json(); //제이슨 변환
+    dispatch({
+      type: "GET_REPOS",
+      payload: data,
+    });
+  };
 
   //로딩상태를 true로 업데이트하기 위한 dispatch
   const setLoading = () =>
@@ -70,9 +89,11 @@ export const GithubProvider = ({ children }) => {
         users: state.users,
         user: state.user,
         loading: state.loading,
+        repos: state.repos,
         searchUsers,
         clearUsers,
         getUser,
+        getUserRepo,
       }}
     >
       {children}
